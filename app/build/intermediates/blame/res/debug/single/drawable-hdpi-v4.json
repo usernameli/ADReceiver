@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\bpush_top_bg.9.png",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\drawable-hdpi\\bpush_top_bg.9.png"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\bpush_lapp_notification_status_icon.png",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\drawable-hdpi\\bpush_lapp_notification_status_icon.png"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\bpush_list_item_bg.9.png",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\drawable-hdpi\\bpush_list_item_bg.9.png"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\bpush_message_prompt.png",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\drawable-hdpi\\bpush_message_prompt.png"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\simple_notification_icon.png",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\drawable-hdpi\\simple_notification_icon.png"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\ic_launcher.png",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\bpush_return_btn.png",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\drawable-hdpi\\bpush_return_btn.png"
+    }
+]

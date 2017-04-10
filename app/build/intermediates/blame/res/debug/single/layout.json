@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bpush_media_list_item.xml",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\layout\\bpush_media_list_item.xml"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bpush_download_progress.xml",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\layout\\bpush_download_progress.xml"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main.xml",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\layout\\main.xml"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bpush_media_list.xml",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\layout\\bpush_media_list.xml"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bpush_lapp_notification_layout.xml",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\layout\\bpush_lapp_notification_layout.xml"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_custom_builder.xml",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\layout\\notification_custom_builder.xml"
+    },
+    {
+        "merged": "C:\\android\\graduation project\\ADReceivers\\app\\build\\intermediates\\res\\merged\\debug\\layout\\bpush_setundistur_time.xml",
+        "source": "C:\\android\\graduation project\\ADReceivers\\app\\src\\main\\res\\layout\\bpush_setundistur_time.xml"
+    }
+]
