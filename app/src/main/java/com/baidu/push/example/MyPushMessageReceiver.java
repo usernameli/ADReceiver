@@ -110,7 +110,7 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
         }
 
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, messageString);
+        updateContent(context, message);
     }
 
     /**
@@ -301,6 +301,7 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
         SimpleDateFormat sDateFormat = new SimpleDateFormat("HH-mm-ss");
         logText += sDateFormat.format(new Date()) + ": ";
         logText += content;
+        Utils.Message = content;
 
         Utils.logStringCache = logText;
 

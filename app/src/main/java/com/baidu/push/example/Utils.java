@@ -24,7 +24,7 @@ public class Utils {
     public static final String ACTION_SHOW_MESSAGE = "bccsclient.action.SHOW_MESSAGE";
     protected static final String EXTRA_ACCESS_TOKEN = "access_token";
     public static final String EXTRA_MESSAGE = "message";
-
+    public static String Message = "";
     public static String logStringCache = "";
 
     // 获取ApiKey

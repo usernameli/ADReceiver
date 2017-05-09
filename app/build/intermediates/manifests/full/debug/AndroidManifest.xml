@@ -45,11 +45,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.baidu.push.example.CustomActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" >
-        </activity>
 
         <!-- push富媒体，使用富媒体推送必须声明 -->
         <activity

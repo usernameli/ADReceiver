@@ -1,14 +1,20 @@
 package com.baidu.push.example;
 
 import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.Audio;
@@ -29,8 +35,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
 
 import com.baidu.android.pushservice.CustomPushNotificationBuilder;
 import com.baidu.android.pushservice.PushConstants;
@@ -41,12 +47,28 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /*
  * 云推送Demo主Activity。
  * 代码中，注释以Push标注开头的，表示接下来的代码块是Push接口调用示例
  */
 public class PushDemoActivity extends Activity implements View.OnClickListener {
-
+    private String title;
+    private String disc;
+    private String distance;
+    private String jingdu;
+    private String weidu;
+    private String location;
+    private String time;
+    private String link;
+    private String myLocationInf;
+    private double myJingdu;
+    private double myWeidu;
+    private int isShow;
+    private double locationDistance;//需要计算的两地距离
     private static final String TAG = PushDemoActivity.class.getSimpleName();
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
@@ -61,15 +83,15 @@ public class PushDemoActivity extends Activity implements View.OnClickListener {
     int showTagBtnId = 0;
     int unbindBtnId = 0;
     int setunDisturbBtnId = 0;
- //   Button initButton = null;
-  //  Button initWithApiKey = null;
- //   Button displayRichMedia = null;
+    //   Button initButton = null;
+    //  Button initWithApiKey = null;
+    //   Button displayRichMedia = null;
     Button setTags = null;
     Button delTags = null;
     Button clearLog = null;
     Button showTags = null;
-  //  Button unbind = null;
-  //  Button setunDisturb = null;
+    //  Button unbind = null;
+    //  Button setunDisturb = null;
     TextView logText = null;
     ScrollView scrollView = null;
     public static int initialCnt = 0;
@@ -86,48 +108,48 @@ public class PushDemoActivity extends Activity implements View.OnClickListener {
 
         setContentView(resource.getIdentifier("main", "layout", pkgName));
         akBtnId = resource.getIdentifier("btn_initAK", "id", pkgName);
-       // initBtnId = resource.getIdentifier("btn_init", "id", pkgName);
-       // richBtnId = resource.getIdentifier("btn_rich", "id", pkgName);
+        // initBtnId = resource.getIdentifier("btn_init", "id", pkgName);
+        // richBtnId = resource.getIdentifier("btn_rich", "id", pkgName);
         setTagBtnId = resource.getIdentifier("btn_setTags", "id", pkgName);
         delTagBtnId = resource.getIdentifier("btn_delTags", "id", pkgName);
         clearLogBtnId = resource.getIdentifier("btn_clear_log", "id", pkgName);
         showTagBtnId = resource.getIdentifier("btn_showTags", "id", pkgName);
-      //  unbindBtnId = resource.getIdentifier("btn_unbindTags", "id", pkgName);
-      //  setunDisturbBtnId = resource.getIdentifier("btn_setunDisturb", "id",
-     //           pkgName);
+        //  unbindBtnId = resource.getIdentifier("btn_unbindTags", "id", pkgName);
+        //  setunDisturbBtnId = resource.getIdentifier("btn_setunDisturb", "id",
+        //           pkgName);
 
-    //    initWithApiKey = (Button) findViewById(akBtnId);
-     //   initButton = (Button) findViewById(initBtnId);
-      //  displayRichMedia = (Button) findViewById(richBtnId);
+        //    initWithApiKey = (Button) findViewById(akBtnId);
+        //   initButton = (Button) findViewById(initBtnId);
+        //  displayRichMedia = (Button) findViewById(richBtnId);
         setTags = (Button) findViewById(setTagBtnId);
         delTags = (Button) findViewById(delTagBtnId);
         clearLog = (Button) findViewById(clearLogBtnId);
         showTags = (Button) findViewById(showTagBtnId);
-      //  unbind = (Button) findViewById(unbindBtnId);
-       // setunDisturb = (Button) findViewById(setunDisturbBtnId);
+        //  unbind = (Button) findViewById(unbindBtnId);
+        // setunDisturb = (Button) findViewById(setunDisturbBtnId);
 
         logText = (TextView) findViewById(resource.getIdentifier("text_log",
                 "id", pkgName));
         scrollView = (ScrollView) findViewById(resource.getIdentifier(
                 "stroll_text", "id", pkgName));
 
-      //  initWithApiKey.setOnClickListener(this);
-      //  initButton.setOnClickListener(this);
+        //  initWithApiKey.setOnClickListener(this);
+        //  initButton.setOnClickListener(this);
         setTags.setOnClickListener(this);
         delTags.setOnClickListener(this);
-      //  displayRichMedia.setOnClickListener(this);
+        //  displayRichMedia.setOnClickListener(this);
         clearLog.setOnClickListener(this);
         showTags.setOnClickListener(this);
-      //  unbind.setOnClickListener(this);
-     //   setunDisturb.setOnClickListener(this);
+        //  unbind.setOnClickListener(this);
+        //   setunDisturb.setOnClickListener(this);
 
         // Push: 以apikey的方式登录，一般放在主Activity的onCreate中。
         // 这里把apikey存放于manifest文件中，只是一种存放方式，
         // 您可以用自定义常量等其它方式实现，来替换参数中的Utils.getMetaValue(PushDemoActivity.this,
         // "api_key")
 
-         // 启动百度push
-         PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY,
+        // 启动百度push
+        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY,
                 Utils.getMetaValue(PushDemoActivity.this, "hOeL93bvRtdivdukZvINhET9s6pWaezS"));
         // Push: 如果想基于地理位置推送，可以打开支持地理位置的推送的开关
         // PushManager.enableLbs(getApplicationContext());
@@ -245,7 +267,6 @@ public class PushDemoActivity extends Activity implements View.OnClickListener {
     }
 
 
-
     // 解绑
     private void unBindForApp() {
         // Push: 解绑
@@ -266,6 +287,7 @@ public class PushDemoActivity extends Activity implements View.OnClickListener {
         mLocationClient.setLocOption(getDefaultLocationClientOption());
         mLocationClient.start();
     }
+
     public LocationClientOption getDefaultLocationClientOption() {
         LocationClientOption mOption = null;
         if (mOption == null) {
@@ -286,6 +308,7 @@ public class PushDemoActivity extends Activity implements View.OnClickListener {
         }
         return mOption;
     }
+
     public class MyLocationListener implements BDLocationListener {
 
         @Override
@@ -349,11 +372,14 @@ public class PushDemoActivity extends Activity implements View.OnClickListener {
                 }
             }
             Log.i("BaiduLocationApiDem", sb.toString());
-            Utils.logStringCache=sb.toString();
+            myLocationInf = Utils.logStringCache = sb.toString();
             updateDisplay();
-          //  showLocation.setText(sb.toString());
+            //  showLocation.setText(sb.toString());
+            myWeidu = location.getLatitude();
+            myJingdu = location.getLongitude();
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -373,7 +399,7 @@ public class PushDemoActivity extends Activity implements View.OnClickListener {
             PushManager.startWork(getApplicationContext(),
                     PushConstants.LOGIN_TYPE_ACCESS_TOKEN, accessToken);
             isLogin = true;
-          //  initButton.setText("更换百度账号");
+            //  initButton.setText("更换百度账号");
         }
 
         updateDisplay();
@@ -392,8 +418,11 @@ public class PushDemoActivity extends Activity implements View.OnClickListener {
 
     // 更新界面显示内容
     private void updateDisplay() {
+        System.out.println("cache" + Utils.logStringCache);
+        // Toast.makeText(PushDemoActivity.this, Utils.Message, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "updateDisplay, logText:" + logText + " cache: "
                 + Utils.logStringCache);
+        resolveMessage(Utils.Message);
         if (logText != null) {
             logText.setText(Utils.logStringCache);
         }
@@ -402,4 +431,84 @@ public class PushDemoActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    private void resolveMessage(String logStringCache) {
+        try {
+            JSONObject jsonArray = new JSONObject(logStringCache);
+            JSONObject array = jsonArray.getJSONObject("description");
+            title = array.getString("title");
+            disc = array.getString("disc");
+            distance = array.getString("distance");
+            jingdu = array.getString("jingdu");
+            location = array.getString("location");
+            weidu = array.getString("weidu");
+            link = array.getString("link");
+            isShow = array.getInt("show");
+            System.out.println(isShow + "");
+            if (location.equals("")) {
+                if ((!jingdu.equals("") && (!weidu.equals("")))) {
+                    locationDistance = distanceUtils.getDistance(Double.parseDouble(jingdu), Double.parseDouble(weidu), myJingdu, myWeidu);
+                    Toast.makeText(PushDemoActivity.this, locationDistance + "", Toast.LENGTH_SHORT).show();
+                    if (!distance.equals("")) {//判断距离是否为空 为空则表示不参与筛选
+                        if (locationDistance <= Double.parseDouble(distance)) {
+                            needToShow();//当前客户端位置在需要广播的圈内
+                        }
+                    }
+                } else {
+                    //位置关键字为空 距离相关信息也为空 则全量广播
+                    needToShow();
+                }
+            } else {//位置关键字不为空
+                if ((!jingdu.equals("") && (!weidu.equals("")))) {
+                    locationDistance = distanceUtils.getDistance(Double.parseDouble(jingdu), Double.parseDouble(weidu), myJingdu, myWeidu);
+                    Toast.makeText(PushDemoActivity.this, locationDistance + "", Toast.LENGTH_SHORT).show();
+                    if (locationDistance <= Double.parseDouble(distance)) {
+                        if (myLocationInf.indexOf(location) != -1) {
+                            needToShow();  //当前客户端位置在需要广播的圈内 且包含关键字
+                        }
+
+                    }
+                } else {
+                    //位置关键字不为空 距离相关信息为空 则判断位置信息中是否包含关键字
+                    if (myLocationInf.indexOf(location) != -1) {
+                        needToShow();
+                    }
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void needToShow() {
+
+        if (isShow == 1) {
+            Toast.makeText(PushDemoActivity.this, isShow + "", Toast.LENGTH_SHORT).show();
+            showNof();
+            System.out.println(isShow + "");
+        }
+    }
+
+    private void showNof() {
+        NotificationManager nm = (NotificationManager) PushDemoActivity.this.getSystemService(NOTIFICATION_SERVICE);
+        Resources res = PushDemoActivity.this.getResources();
+        Notification.Builder builder = new Notification.Builder(PushDemoActivity.this);
+        nm = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
+        Intent notificationIntent = new Intent();
+        notificationIntent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse(link);
+        notificationIntent.setData(content_url);
+        PendingIntent contentIntent = PendingIntent.getActivity(PushDemoActivity.this, 0, notificationIntent, 0);
+        builder.setContentIntent(contentIntent).
+                setSmallIcon(R.drawable.ic_launcher)//设置状态栏里面的图标（小图标） 　　　　　　　　　　　　　　　　　　　　.setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.i5))//下拉下拉列表里面的图标（大图标） 　　　　　　　.setTicker("this is bitch!") //设置状态栏的显示的信息
+                .setWhen(System.currentTimeMillis())//设置时间发生时间
+                .setAutoCancel(true)//设置可以清除
+                .setContentTitle(title)//设置下拉列表里的标题
+                .setContentText(disc);//设置上下文内容
+        Notification n = builder.getNotification();//获取一个Notification
+        // n.defaults = Notification.DEFAULT_SOUND;//设置为默认的声音
+        nm.notify(110, n);//显示通知 break; }
+    }
 }
+
+
